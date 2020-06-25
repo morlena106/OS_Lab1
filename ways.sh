@@ -1,7 +1,8 @@
 #!/bin/bash
+IFS=$'\n'
 function out () {
-	name=$(stat -t $1 | awk '{print $1}')
-        size=$(stat -t $1 | awk '{print $2}')
+	name=$(stat $1 | grep File | awk '{for (i=2; i<10; i++) print $i}')
+	size=$(stat $1 | grep Size | awk '{print $2}')
 	modif=$(stat -c %y $1 | awk '{print $1}')
 	if file -ib "$1" | grep 'video'
 	then
@@ -16,7 +17,7 @@ function out () {
 }
 
 function func () {
-for all in $( ls $1)
+for all in $(ls $1)
 do
 	if [[ -f $all ]]
 	then
@@ -31,5 +32,5 @@ do
 done
 }
 
-echo "name, size, modification, duration" >> mylastlist.csv
-func "$(pwd)" >> mylastlist.csv
+echo "name, size, modification, duration" >> LIST.csv
+func "$(pwd)" >> LIST.csv
