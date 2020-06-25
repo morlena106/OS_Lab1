@@ -1,7 +1,7 @@
 #!/bin/bash
 IFS=$'\n'
 function out () {
-	name=$(stat $1 | grep File | awk '{for (i=2; i<10; i++) print $i}')
+	name=$1
 	size=$(stat $1 | grep Size | awk '{print $2}')
 	modif=$(stat -c %y $1 | awk '{print $1}')
 	if file -ib "$1" | grep 'video'
@@ -34,3 +34,4 @@ done
 
 echo "name, size, modification, duration" >> LIST.csv
 func "$(pwd)" >> LIST.csv
+sed 's/,/:,/g' LIST.csv | column -t -s: | sed 's/ ,/|/g'
